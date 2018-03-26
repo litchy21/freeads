@@ -1,0 +1,12 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+app_file:
+    # loads routes from the given routing file stored in some bundle
+    resource: '@AppBundle/Resources/config/routing.yml'
+
+app_annotations:
+    # loads routes from the PHP annotations of the controllers found in that directory
+    resource: '@AppBundle/Controller/'
+    type:     annotation

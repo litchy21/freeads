@@ -1,0 +1,9 @@
+<h3>Bonjour {{ user.name }} {{ user.lastname }} !</h3>
+
+<p>Bienvenue sur le site FreeAds !</p>
+
+<p>Confirmez votre compte en accédant au lien suivant :</p>
+
+<a href="{{ app.request.getSchemeAndHttpHost() ~ '/' ~ user.id ~ '/login' }}">Cliquez moi !</a>
+
+<p>Merci, à bientôt sur FreeAds :)</p>

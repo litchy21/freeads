@@ -1,0 +1,13 @@
+.navbar-nav {
+    flex-direction: unset !important;
+}
+.nav-item {
+    padding-left: 50px;
+}
+#main-content {
+    background-image: url("../images/background.jpg");
+    min-height: -webkit-fill-available;
+}
+#home_buttons {
+    padding-top: 200px;
+}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profil</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Pseudo</th>
+                <td>{{ app.user.username }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ app.user.name }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ app.user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Adresse email</th>
+                <td>{{ app.user.email }}</td>
+            </tr>
+            <tr>
+                <th>Date de naissance</th>
+                <td>{% if app.user.birthdate %}{{ app.user.birthdate|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Membre depuis </th>
+                <td>{% if app.user.created %}{{ app.user.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('user_edit', { 'id': app.user.id }) }}">Edit</a>
+        </li>
+        <li>
+            <a href="{{ path('user_delete', { 'id': app.user.id }) }}">Delete</a>
+        </li>
+    </ul>
+{% endblock %}
