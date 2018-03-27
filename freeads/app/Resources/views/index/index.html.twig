@@ -1,13 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <div class="row justify-content-md-center" id="home_buttons">
-        <div class="col-md-2">
-            <button class="btn btn-lg btn-dark">Connexion</button>
-        </div>
-        <div class="col-md-2">
-            <button class="btn btn-lg btn-dark">Inscription</button>
-        </div>
-    </div>
-
-{% endblock %}
+{% extends 'base.html.twig' %}{% block body %}    <div class="row justify-content-md-center" id="home_buttons">        {% if is_granted('ROLE_USER') %}            <div class="col-md-5">                <h1>Bienvenue sur Free Ads !</h1>            </div>        {% else %}             <div class="col-md-2">                 <button class="btn btn-lg btn-dark">Connexion</button>             </div>             <div class="col-md-2">                 <button class="btn btn-lg btn-dark">Inscription</button>             </div>        {% endif %}    </div>{% endblock %}

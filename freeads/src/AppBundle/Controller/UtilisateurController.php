@@ -24,7 +24,7 @@ class UtilisateurController extends Controller
 
         $utilisateurs = $em->getRepository('AppBundle:Utilisateur')->findAll();
 
-        return $this->render('utilisateur/index.html.twig', array(
+        return $this->render('index/index.html.twig', array(
             'utilisateurs' => $utilisateurs,
         ));
     }
@@ -68,7 +68,7 @@ class UtilisateurController extends Controller
         }
 
         return $this->render('utilisateur/new.html.twig', array(
-            'utilisateur' => $utilisateur,
+            'user' => $utilisateur,
             'form' => $form->createView(),
         ));
     }
@@ -94,7 +94,7 @@ class UtilisateurController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        return $this->redirectToRoute('user_show', array('id' => $id));
+        return $this->redirectToRoute('security_login');
     }
 
     /**
