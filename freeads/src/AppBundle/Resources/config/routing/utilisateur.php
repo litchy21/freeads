@@ -52,7 +52,7 @@ $collection->add('user_delete', new Route(
     array(),
     '',
     array(),
-    array('DELETE')
+    array('GET','DELETE')
 ));
 
 return $collection;

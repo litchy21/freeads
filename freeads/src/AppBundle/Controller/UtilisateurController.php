@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+
 /**
  * Utilisateur controller.
  *
@@ -63,8 +64,9 @@ class UtilisateurController extends Controller
 
             $mailer->send($message);
 
+            $this->addFlash('success', 'Bien inscrit ! Un email vous a été envoyé pour confirmer votre compte.');
 
-            return $this->redirectToRoute('user_show', array('id' => $utilisateur->getId()));
+            return $this->redirectToRoute('security_login');
         }
 
         return $this->render('utilisateur/new.html.twig', array(
@@ -77,9 +79,12 @@ class UtilisateurController extends Controller
      * Finds and displays a utilisateur entity.
      *
      */
-    public function showAction()
+    public function showAction(Request $request)
     {
-        return $this->render('utilisateur/show.html.twig');
+        $utilisateur = $this->get('security.token_storage')->getToken()->getUser();
+        $form = $this->createDeleteForm($utilisateur);
+        $form->handleRequest($request);
+        return $this->render('utilisateur/show.html.twig', array('delete_form' => $form->createView()));
     }
 
     /**
@@ -101,22 +106,32 @@ class UtilisateurController extends Controller
      * Displays a form to edit an existing utilisateur entity.
      *
      */
-    public function editAction(Request $request, Utilisateur $utilisateur)
+    public function editAction(Request $request, Utilisateur $utilisateur, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $deleteForm = $this->createDeleteForm($utilisateur);
-        $editForm = $this->createForm('AppBundle\Form\UtilisateurType', $utilisateur);
-        $editForm->handleRequest($request);
+        /* $editPassForm = $this->createForm('AppBundle\Form\EditPassType', $utilisateur);
+         $editEmailForm = $this->createForm('AppBundle\Form\EditEmailType', $utilisateur);
+         $editPassForm->handleRequest($request);
+         $editEmailForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+         if ($editEmailForm->isSubmitted() && $editEmailForm->isValid()) {
+             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('user_edit', array('id' => $utilisateur->getId()));
-        }
+             return $this->redirectToRoute('user_show', array('id' => $utilisateur->getId()));
+         }
+         /*if ($editPassForm->isSubmitted() && $editPassForm->isValid()) {
+             $passFormContent = $editPassForm->getData();
+             $plainPassword = $passwordEncoder->encodePassword($utilisateur, $passFormContent->getPlainPassword());
+             if ($plainPassword == $utilisateur->getPassword()) {
+                 $this->getDoctrine()->getManager()->flush();
+
+                 return $this->redirectToRoute('user_show', array('id' => $utilisateur->getId()));
+             }
+         }*/
 
         return $this->render('utilisateur/edit.html.twig', array(
             'utilisateur' => $utilisateur,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            /*'edit_email_form' => $editEmailForm->createView(),
+            'edit_password_form' => $editPassForm->createView(),*/
         ));
     }
 
@@ -126,6 +141,7 @@ class UtilisateurController extends Controller
      */
     public function deleteAction(Request $request, Utilisateur $utilisateur)
     {
+        $utilisateur = $this->get('security.token_storage')->getToken()->getUser();
         $form = $this->createDeleteForm($utilisateur);
         $form->handleRequest($request);
 

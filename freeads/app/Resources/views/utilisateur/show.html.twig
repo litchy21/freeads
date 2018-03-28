@@ -37,7 +37,9 @@
             <a href="{{ path('user_edit', { 'id': app.user.id }) }}">Edit</a>
         </li>
         <li>
-            <a href="{{ path('user_delete', { 'id': app.user.id }) }}">Delete</a>
+            {{ form_start(delete_form) }}
+            <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}

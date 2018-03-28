@@ -10,3 +10,7 @@ app_annotations:
     # loads routes from the PHP annotations of the controllers found in that directory
     resource: '@AppBundle/Controller/'
     type:     annotation
+
+app_annonces:
+        resource: "@AppBundle/Resources/config/routing/annonce.php"
+        prefix:   /annonces

@@ -2,11 +2,12 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * Utilisateur
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Core\Role\Role;
  * @UniqueEntity(fields="username", message="Username already taken")
  * @ORM\HasLifecycleCallbacks
  */
-class Utilisateur implements UserInterface
+class Utilisateur implements UserInterface, AdvancedUserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -262,23 +263,44 @@ class Utilisateur implements UserInterface
 
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return array('ROLE_USER');
     }
-    public function getSalt()
-    {
-    }
+    public function getSalt(){}
     public function eraseCredentials()
     {
         $this->password = null;
     }
     public function serialize()
     {
-        return serialize([$this->id, $this->username, $this->password]);
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->confirm,
+        ));
     }
-
     public function unserialize($serialized)
     {
-        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->confirm,
+            ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+    public function isAccountNonExpired(){
+        return true;
+    }
+    public function isAccountNonLocked(){
+        return true;
+    }
+    public function isCredentialsNonExpired(){
+        return true;
+    }
+    public function isEnabled(){
+        return $this->confirm;
+    }
+    public function offsetUnset($offset){
     }
 
     /**
@@ -296,5 +318,15 @@ class Utilisateur implements UserInterface
     {
         $this->confirm = $confirm;
     }
+
+    /**
+     * @return bool
+     */
+    public function getConfirm()
+    {
+        return $this->confirm;
+    }
+
+
 }
 

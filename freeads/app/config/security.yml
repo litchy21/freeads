@@ -28,6 +28,7 @@ security:
                   invalidate_session: true
                   path: /logout
                   target: /connexion
+             pattern: ^/
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
