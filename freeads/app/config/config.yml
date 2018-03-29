@@ -7,11 +7,18 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    images_directory: '%kernel.root_dir%/../web/upload'
 
 sensio_framework_extra:
    request:
        converters: true
        auto_convert: false
+
+kms_froala_editor:
+    language: "fr"
+    toolbarInline: true
+    tableColors: [ "#FFFFFF", "#FF0000" ]
+    saveParams: { "id" : "myEditorField" }
 
 framework:
     #esi: ~

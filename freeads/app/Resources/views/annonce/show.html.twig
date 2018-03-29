@@ -15,11 +15,12 @@
             </tr>
             <tr>
                 <th>Description</th>
-                <td>{{ annonce.description }}</td>
+                <td>{{ froala_display( annonce.description ) }}</td>
             </tr>
             <tr>
                 <th>Photo</th>
-                <td>{{ annonce.photo }}</td>
+                <td><img src="{{ asset('upload/' ~ annonce.image) }}" height="100px" width="250px">
+                </td>
             </tr>
             <tr>
                 <th>Price</th>

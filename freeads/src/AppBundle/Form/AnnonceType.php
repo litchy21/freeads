@@ -3,8 +3,10 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use KMS\FroalaEditorBundle\Form\Type\FroalaEditorType;
 
 class AnnonceType extends AbstractType
 {
@@ -13,7 +15,11 @@ class AnnonceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('description')->add('photo')->add('price');
+        $builder
+            ->add('title')
+            ->add('description')
+            ->add('image', FileType::class, array('required' => false, 'data_class' => null))
+            ->add('price');
     }/**
      * {@inheritdoc}
      */

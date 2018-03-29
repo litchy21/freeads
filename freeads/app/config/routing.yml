@@ -14,3 +14,7 @@ app_annotations:
 app_annonces:
         resource: "@AppBundle/Resources/config/routing/annonce.php"
         prefix:   /annonces
+
+kms_froala_editor:
+  resource: "@KMSFroalaEditorBundle/Resources/config/routing.yml"
+  prefix:   /froalaeditor

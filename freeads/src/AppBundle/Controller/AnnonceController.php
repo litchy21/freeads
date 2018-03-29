@@ -4,7 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Annonce;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\ImageUploader;
 
 /**
  * Annonce controller.
@@ -12,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AnnonceController extends Controller
 {
+
     /**
      * Lists all annonce entities.
      *
@@ -31,13 +34,20 @@ class AnnonceController extends Controller
      * Creates a new annonce entity.
      *
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, ImageUploader $imageUploader)
     {
         $annonce = new Annonce();
         $form = $this->createForm('AppBundle\Form\AnnonceType', $annonce);
         $form->handleRequest($request);
+        $utilisateur = $this->get('security.token_storage')->getToken()->getUser();
+        $annonce->setIdUser($utilisateur->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $annonce->getImage();
+            $imageName = $imageUploader->upload($image);
+            $annonce->setImage($imageName);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($annonce);
             $em->flush();
@@ -55,8 +65,10 @@ class AnnonceController extends Controller
      * Finds and displays a annonce entity.
      *
      */
-    public function showAction(Annonce $annonce)
+    public function showAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $annonce = $em->getRepository('AppBundle:Annonce')->find($id);
         $deleteForm = $this->createDeleteForm($annonce);
 
         return $this->render('annonce/show.html.twig', array(
@@ -69,16 +81,34 @@ class AnnonceController extends Controller
      * Displays a form to edit an existing annonce entity.
      *
      */
-    public function editAction(Request $request, Annonce $annonce)
+    public function editAction(Request $request, $id, ImageUploader $imageUploader)
     {
+        $em = $this->getDoctrine()->getManager();
+        $annonce = $em->getRepository('AppBundle:Annonce')->find($id);
+
         $deleteForm = $this->createDeleteForm($annonce);
+
         $editForm = $this->createForm('AppBundle\Form\AnnonceType', $annonce);
+
+        // $editForm->handleRequest($request);
+        $imageContent = $editForm->getData()->getImage();
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+           if ($editForm->getData()->getImage() != null) {
+               $image = $annonce->getImage();
+               $imageName = $imageUploader->upload($image);
 
-            return $this->redirectToRoute('annonces_edit', array('id' => $annonce->getId()));
+               new File($this->getParameter('images_directory').'/'.$imageName);
+
+               $annonce->setImage($imageName);
+           } else {
+               $annonce->setImage($imageContent);
+           }
+           var_dump($annonce);
+           $this->getDoctrine()->getManager()->flush();
+
+           return $this->redirectToRoute('annonces_edit', array('id' => $annonce->getId()));
         }
 
         return $this->render('annonce/edit.html.twig', array(

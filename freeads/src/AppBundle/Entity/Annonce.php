@@ -21,6 +21,28 @@ class Annonce
     private $id;
 
     /**
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id_user;
+
+    /**
+     * @return mixed
+     */
+    public function getIdUser()
+    {
+        return $this->id_user;
+    }
+
+    /**
+     * @param mixed $id_user
+     */
+    public function setIdUser($id_user)
+    {
+        $this->id_user = $id_user;
+    }
+
+    /**
      * @var string
      * @ORM\Column(type="string")
      */
@@ -34,16 +56,16 @@ class Annonce
 
     /**
      * @var string
+     * @Assert\File(mimeTypes={ "image/jpeg" })
      * @ORM\Column(type="string")
      */
-    private $photo;
+    private $image;
 
     /**
      * @var float
      * @ORM\Column(type="float")
      */
     private $price;
-
 
     /**
      * Get id
@@ -106,15 +128,10 @@ class Annonce
     /**
      * Set photo
      *
-     * @param string $photo
-     *
-     * @return Annonce
      */
-    public function setPhoto($photo)
+    public function setImage($image)
     {
-        $this->photo = $photo;
-
-        return $this;
+        $this->image = $image;
     }
 
     /**
@@ -122,9 +139,9 @@ class Annonce
      *
      * @return string
      */
-    public function getPhoto()
+    public function getImage()
     {
-        return $this->photo;
+        return $this->image;
     }
 
     /**
