@@ -139,7 +139,7 @@ class UtilisateurController extends Controller
      * Deletes a utilisateur entity.
      *
      */
-    public function deleteAction(Request $request, Utilisateur $utilisateur)
+    public function deleteAction(Request $request)
     {
         $utilisateur = $this->get('security.token_storage')->getToken()->getUser();
         $form = $this->createDeleteForm($utilisateur);

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tous les messages</h1>
+
+    <h3>Messages Reçus</h3>
+    <table>
+        <thead>
+        <th>Id Sender</th>
+        <th>Id Receiver</th>
+        <th>Content</th>
+        <th>Date</th>
+        </thead>
+        <tbody>
+        {% for message in messages_received %}
+            <tr>
+                <td>{{ message.idSender }}</td>
+                <td>{{ message.idReceiver }}</td>
+                <td>{{ message.content }}</td>
+                <td>{{ message.created | date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Messages Envoyés</h3>
+    <table>
+        <thead>
+        <th>Id Sender</th>
+        <th>Id Receiver</th>
+        <th>Content</th>
+        <th>Date</th>
+        </thead>
+        <tbody>
+        {% for message in messages_sent %}
+            <tr>
+                <td>{{ message.idSender }}</td>
+                <td>{{ message.idReceiver }}</td>
+                <td>{{ message.content }}</td>
+                <td>{{ message.created | date }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h2>Ecrire un message</h2>
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit">Envoyer</button>
+    {{ form_end(form) }}
+
+{% endblock %}

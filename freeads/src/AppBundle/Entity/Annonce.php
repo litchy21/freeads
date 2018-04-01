@@ -29,7 +29,7 @@ class Annonce
     /**
      * @return mixed
      */
-    public function getIdUser()
+    public function getid_user()
     {
         return $this->id_user;
     }
@@ -37,7 +37,7 @@ class Annonce
     /**
      * @param mixed $id_user
      */
-    public function setIdUser($id_user)
+    public function setid_user($id_user)
     {
         $this->id_user = $id_user;
     }
@@ -62,8 +62,8 @@ class Annonce
     private $image;
 
     /**
-     * @var float
-     * @ORM\Column(type="float")
+     * @var string
+     * @ORM\Column(type="string")
      */
     private $price;
 

@@ -6,10 +6,6 @@
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ annonce.id }}</td>
-            </tr>
-            <tr>
                 <th>Title</th>
                 <td>{{ annonce.title }}</td>
             </tr>
@@ -33,6 +29,7 @@
         <li>
             <a href="{{ path('annonces_index') }}">Back to the list</a>
         </li>
+        {% if annonce.id_user == app.user.id %}
         <li>
             <a href="{{ path('annonces_edit', { 'id': annonce.id }) }}">Edit</a>
         </li>
@@ -41,5 +38,6 @@
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
+        {% endif %}
     </ul>
 {% endblock %}

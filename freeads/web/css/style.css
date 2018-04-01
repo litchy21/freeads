@@ -11,6 +11,6 @@
 #home_buttons {
     padding-top: 200px;
 }
-h1 {
+h1, label, tr, td, a {
     color: white !important;
 }

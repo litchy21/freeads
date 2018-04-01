@@ -40,7 +40,7 @@ class AnnonceController extends Controller
         $form = $this->createForm('AppBundle\Form\AnnonceType', $annonce);
         $form->handleRequest($request);
         $utilisateur = $this->get('security.token_storage')->getToken()->getUser();
-        $annonce->setIdUser($utilisateur->getId());
+        $annonce->setid_user($utilisateur->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -51,6 +51,8 @@ class AnnonceController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($annonce);
             $em->flush();
+            $this->addFlash('success', 'Annonce créée !');
+
 
             return $this->redirectToRoute('annonces_show', array('id' => $annonce->getId()));
         }
@@ -90,7 +92,6 @@ class AnnonceController extends Controller
 
         $editForm = $this->createForm('AppBundle\Form\AnnonceType', $annonce);
 
-        // $editForm->handleRequest($request);
         $imageContent = $editForm->getData()->getImage();
         $editForm->handleRequest($request);
 
@@ -105,10 +106,12 @@ class AnnonceController extends Controller
            } else {
                $annonce->setImage($imageContent);
            }
-           var_dump($annonce);
+
            $this->getDoctrine()->getManager()->flush();
 
-           return $this->redirectToRoute('annonces_edit', array('id' => $annonce->getId()));
+            $this->addFlash('success', 'Annonce modifiée !');
+
+            return $this->redirectToRoute('annonces_show', array('id' => $annonce->getId()));
         }
 
         return $this->render('annonce/edit.html.twig', array(
@@ -122,8 +125,11 @@ class AnnonceController extends Controller
      * Deletes a annonce entity.
      *
      */
-    public function deleteAction(Request $request, Annonce $annonce)
+    public function deleteAction(Request $request, $id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $annonce = $em->getRepository('AppBundle:Annonce')->find($id);
+
         $form = $this->createDeleteForm($annonce);
         $form->handleRequest($request);
 
@@ -132,7 +138,7 @@ class AnnonceController extends Controller
             $em->remove($annonce);
             $em->flush();
         }
-
+        $this->addFlash('success', 'Annonce supprimée !');
         return $this->redirectToRoute('annonces_index');
     }
 
